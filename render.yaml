@@ -1,11 +1,7 @@
 services:
   - type: web
     name: n8n-linhares
-    env: docker
-    image:
-      registry: docker
-      name: n8nio/n8n
-      tag: latest
+    image: n8nio/n8n:latest
     plan: free
     region: oregon
     startCommand: n8n
@@ -22,4 +18,3 @@ services:
         value: America/Sao_Paulo
       - key: N8N_ENCRYPTION_KEY
         value: BiancaLinhares_ChaveSegura_2025
-
