@@ -1,0 +1,21 @@
+services:
+  - type: web
+    name: n8n-linhares
+    env: docker
+    image: n8nio/n8n:latest
+    plan: free
+    region: oregon
+    startCommand: n8n
+    envVars:
+      - key: N8N_HOST
+        value: 0.0.0.0
+      - key: N8N_PORT
+        value: "5678"
+      - key: N8N_PROTOCOL
+        value: https
+      - key: NODE_ENV
+        value: production
+      - key: GENERIC_TIMEZONE
+        value: America/Sao_Paulo
+      - key: N8N_ENCRYPTION_KEY
+        value: BiancaLinhares_ChaveSegura_2025
