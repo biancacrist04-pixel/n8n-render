@@ -1,20 +1,54 @@
 services:
   - type: web
     name: n8n-linhares
-    image: n8nio/n8n:latest
+    runtime: image
     plan: free
     region: oregon
-    startCommand: n8n
+
+    image:
+      url: docker.io/n8nio/n8n:latest
+
+    dockerCommand: n8n
+
     envVars:
-      - key: N8N_HOST
-        value: 0.0.0.0
-      - key: N8N_PORT
-        value: "5678"
+      # Obrigatório para o n8n usar Postgres
+      - key: DB_TYPE
+        value: postgresdb
+
+      # Puxa dados do Postgres criado no Render (nome precisa bater com o database abaixo)
+      - key: DB_POSTGRESDB_HOST
+        fromDatabase:
+          name: n8n-db
+          property: host
+      - key: DB_POSTGRESDB_PORT
+        fromDatabase:
+          name: n8n-db
+          property: port
+      - key: DB_POSTGRESDB_DATABASE
+        fromDatabase:
+          name: n8n-db
+          property: database
+      - key: DB_POSTGRESDB_USER
+        fromDatabase:
+          name: n8n-db
+          property: user
+      - key: DB_POSTGRESDB_PASSWORD
+        fromDatabase:
+          name: n8n-db
+          property: password
+
+      # n8n básicos (você pode ajustar depois no painel)
       - key: N8N_PROTOCOL
         value: https
-      - key: NODE_ENV
-        value: production
       - key: GENERIC_TIMEZONE
         value: America/Sao_Paulo
+
+      # Chave de criptografia (recomendado ser Secret no painel; aqui vai só pra destravar)
       - key: N8N_ENCRYPTION_KEY
         value: BiancaLinhares_ChaveSegura_2025
+
+databases:
+  - name: n8n-db
+    plan: free
+    region: oregon
+    postgresMajorVersion: "18"
